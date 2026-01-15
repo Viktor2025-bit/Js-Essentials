@@ -1,10 +1,13 @@
-import { View, Text, ScrollView, TouchableOpacity, Pressable } from 'react-native';
-import { Link, Stack } from 'expo-router';
+import { View, Text, ScrollView, TouchableOpacity, Pressable, ActivityIndicator } from 'react-native';
+import { Link, Stack, router } from 'expo-router';
 import { modules } from '../data/lessons';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useProgress } from '@/contexts/ProgressContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect, useState } from 'react';
 
 // Lesson icons mapping
 const lessonIcons: { [key: string]: keyof typeof Ionicons.glyphMap } = {
@@ -13,13 +16,45 @@ const lessonIcons: { [key: string]: keyof typeof Ionicons.glyphMap } = {
     functions: 'code-slash',
     arrays: 'list',
     objects: 'shapes',
+    'control-flow': 'git-branch',
+    'es6-features': 'flash',
+    'async-js': 'time',
 };
 
 export default function HomeScreen() {
     const { theme, toggleTheme, colors } = useTheme();
     const { isLessonComplete, getProgress } = useProgress();
+    const { signOut } = useAuth();
+    const [isLoading, setIsLoading] = useState(true);
+
     const progress = getProgress();
     const progressPercent = progress.total > 0 ? (progress.completed / progress.total) * 100 : 0;
+
+    useEffect(() => {
+        checkOnboarding();
+    }, []);
+
+    const checkOnboarding = async () => {
+        try {
+            const hasSeen = await AsyncStorage.getItem('hasSeenOnboarding');
+            if (hasSeen !== 'true') {
+                router.replace('/onboarding');
+            } else {
+                setIsLoading(false);
+            }
+        } catch (error) {
+            console.log('Error checking onboarding:', error);
+            setIsLoading(false);
+        }
+    };
+
+    if (isLoading) {
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.background }}>
+                <ActivityIndicator size="large" color={colors.accent} />
+            </View>
+        );
+    }
 
     return (
         <View style={{ flex: 1, backgroundColor: colors.background }}>
@@ -39,20 +74,36 @@ export default function HomeScreen() {
                     </View>
 
                     {/* Theme Toggle Button */}
-                    <Pressable
-                        onPress={toggleTheme}
-                        style={{
-                            backgroundColor: 'rgba(255,255,255,0.2)',
-                            padding: 12,
-                            borderRadius: 16,
-                        }}
-                    >
-                        <Ionicons
-                            name={theme === 'light' ? 'moon' : 'sunny'}
-                            size={24}
-                            color="#fff"
-                        />
-                    </Pressable>
+                    <View style={{ flexDirection: 'row', gap: 8 }}>
+                        <Pressable
+                            onPress={toggleTheme}
+                            style={{
+                                backgroundColor: 'rgba(255,255,255,0.2)',
+                                padding: 12,
+                                borderRadius: 16,
+                            }}
+                        >
+                            <Ionicons
+                                name={theme === 'light' ? 'moon' : 'sunny'}
+                                size={24}
+                                color="#fff"
+                            />
+                        </Pressable>
+                        <Pressable
+                            onPress={signOut}
+                            style={{
+                                backgroundColor: 'rgba(255,50,50,0.2)',
+                                padding: 12,
+                                borderRadius: 16,
+                            }}
+                        >
+                            <Ionicons
+                                name="log-out-outline"
+                                size={24}
+                                color="#fff"
+                            />
+                        </Pressable>
+                    </View>
                 </View>
 
                 <Text style={{ fontSize: 16, color: 'rgba(255,255,255,0.9)', marginTop: 12 }}>
@@ -123,10 +174,10 @@ export default function HomeScreen() {
                                             {/* Lesson Icon */}
                                             <LinearGradient
                                                 colors={
-                                                    index === 0 ? ['#f472b6', '#ec4899'] :
-                                                        index === 1 ? ['#60a5fa', '#3b82f6'] :
-                                                            index === 2 ? ['#34d399', '#10b981'] :
-                                                                index === 3 ? ['#fbbf24', '#f59e0b'] :
+                                                    index % 5 === 0 ? ['#f472b6', '#ec4899'] :
+                                                        index % 5 === 1 ? ['#60a5fa', '#3b82f6'] :
+                                                            index % 5 === 2 ? ['#34d399', '#10b981'] :
+                                                                index % 5 === 3 ? ['#fbbf24', '#f59e0b'] :
                                                                     ['#a78bfa', '#8b5cf6']
                                                 }
                                                 style={{

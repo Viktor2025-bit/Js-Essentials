@@ -216,6 +216,138 @@ export const modules: Module[] = [
             correctAnswer: 2
           }
         ]
+      },
+      {
+        id: 'control-flow',
+        title: 'Control Flow',
+        content: [
+          {
+            type: 'text',
+            content: 'Control flow allows you to dictate how your code runs based on conditions. The most common structures are "if" statements and loops.'
+          },
+          {
+            type: 'code',
+            content: 'let age = 18;\nif (age >= 18) {\n  console.log("You can vote!");\n} else {\n  console.log("Too young.");\n}'
+          },
+          {
+            type: 'text',
+            content: 'Loops allow you to repeat actions. The "for" loop is widely used:'
+          },
+          {
+            type: 'code',
+            content: 'for (let i = 0; i < 5; i++) {\n  console.log("Iteration " + i);\n}'
+          }
+        ],
+        quiz: [
+          {
+            question: 'Which statement is used to execute code only if a condition is true?',
+            options: [
+              'loop',
+              'for',
+              'if',
+              'while'
+            ],
+            correctAnswer: 2
+          },
+          {
+            question: 'How many times will "for(let i=0; i<3; i++)" run?',
+            options: [
+              '2 times',
+              '3 times',
+              '4 times',
+              'Forever'
+            ],
+            correctAnswer: 1
+          }
+        ]
+      },
+      {
+        id: 'es6-features',
+        title: 'ES6+ Features',
+        content: [
+          {
+            type: 'text',
+            content: 'Modern JavaScript (ES6 and later) introduced powerful features to write cleaner code. One is "Destructuring".'
+          },
+          {
+            type: 'code',
+            content: 'const point = { x: 10, y: 20 };\nconst { x, y } = point;\n\nconsole.log(x); // 10'
+          },
+          {
+            type: 'text',
+            content: 'Another is the "Spread Operator", used to expand arrays or objects:'
+          },
+          {
+            type: 'code',
+            content: 'const num1 = [1, 2];\nconst num2 = [...num1, 3, 4];\n// [1, 2, 3, 4]'
+          }
+        ],
+        quiz: [
+          {
+            question: 'What does the spread operator (...) do?',
+            options: [
+              'Compresses arrays',
+              'Expands arrays/objects',
+              'Deletes variables',
+              'Nothing'
+            ],
+            correctAnswer: 1
+          },
+          {
+            question: 'Which syntax extracts values from an object directly?',
+            options: [
+              'Destructuring',
+              'Constructing',
+              'Parsing',
+              'Stringify'
+            ],
+            correctAnswer: 0
+          }
+        ]
+      },
+      {
+        id: 'async-js',
+        title: 'Async JavaScript',
+        content: [
+          {
+            type: 'text',
+            content: 'JavaScript is single-threaded, but it can handle long tasks (like fetching data) asynchronously using Promises and Async/Await.'
+          },
+          {
+            type: 'code',
+            content: '// Using a Promise\nfetchData().then(data => {\n  console.log(data);\n});'
+          },
+          {
+            type: 'text',
+            content: 'Async/Await makes asynchronous code look synchronous and easier to read:'
+          },
+          {
+            type: 'code',
+            content: 'async function getData() {\n  const data = await fetchData();\n  console.log(data);\n}'
+          }
+        ],
+        quiz: [
+          {
+            question: 'Which keyword makes a function return a Promise?',
+            options: [
+              'wait',
+              'sync',
+              'async',
+              'promise'
+            ],
+            correctAnswer: 2
+          },
+          {
+            question: 'What does "await" do?',
+            options: [
+              'Pauses execution until Promise resolves',
+              'Stops the program forever',
+              'Speeds up code',
+              'Creates a new thread'
+            ],
+            correctAnswer: 0
+          }
+        ]
       }
     ]
   }

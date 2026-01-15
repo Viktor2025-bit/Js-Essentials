@@ -11,7 +11,7 @@ interface ProgressContextType {
 const ProgressContext = createContext<ProgressContextType | undefined>(undefined);
 
 const STORAGE_KEY = '@js_essentials_progress';
-const TOTAL_LESSONS = 5; // intro, variables, functions, arrays, objects
+const TOTAL_LESSONS = 8; // intro, variables, functions, arrays, objects, control-flow, es6, async
 
 export function ProgressProvider({ children }: { children: ReactNode }) {
     const [completedLessons, setCompletedLessons] = useState<string[]>([]);
